@@ -1,0 +1,47 @@
+- hosts: all
+  tasks:
+  - copy:
+      src: "/etc/yum.repos.d/dkr.repo"
+      dest: "/etc/yum.repos.d"
+
+  - package:
+      name: "docker-ce-18.06.3.ce-3.el7.x86_64"
+      state: present
+
+  - pip:
+      name: "docker"
+
+  - service:
+      name: "docker"
+      state: started
+  
+  - file:
+      path: "/web_"
+      state: directory
+
+  - copy:
+      src: "/x.html"
+      dest: "/web_"
+  
+  - docker_image:
+      name: "httpd"
+      source: pull
+
+  - docker_container:
+      name: "dock_web"
+      image: httpd
+      state: started
+      exposed_ports:
+      - "80"
+      ports:
+      - "3420:80"
+      volumes:
+      - /web_:/usr/local/apache2/htdocs/
+   
+ 
+
+
+  
+
+
+
