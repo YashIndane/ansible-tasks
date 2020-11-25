@@ -1,0 +1,18 @@
+- hosts: all
+
+  tasks:
+
+  - package: 
+     name: "httpd"
+     state: present
+
+  - copy: 
+     src: "/root/j.html"
+     dest: "/var/www/html"
+
+  - service:
+     name: "httpd"
+     enabled: yes
+     state: started
+
+
