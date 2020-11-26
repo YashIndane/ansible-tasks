@@ -1,9 +1,12 @@
 - hosts: all
   tasks:
-  - copy:
-      src: "/etc/yum.repos.d/dkr.repo"
-      dest: "/etc/yum.repos.d"
 
+  - yum_repository:
+       name: "docker_repo"
+       description: "This is testing purpose"
+       baseurl: "https://download.docker.com/linux/centos/7/x86_64/stable/"
+       gpgcheck: no
+       
   - package:
       name: "docker-ce-18.06.3.ce-3.el7.x86_64"
       state: present
