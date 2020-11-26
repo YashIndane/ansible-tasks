@@ -1,0 +1,41 @@
+- hosts: all
+  tasks:
+  - file:
+      path: "/my_mount"
+      state: directory
+  
+  - mount:
+      path: "/my_mount"
+      src: "/dev/sr0"
+      fstype: iso9660
+      state: mounted
+
+  - yum_repository:
+      name: "nr1"
+      description: "test repo"
+      baseurl: "/my_mount/AppStream"
+      gpgcheck: no
+  
+  - yum_repository:
+      name: "nr2"
+      description: "test repo2"
+      baseurl: "/my_mount/BaseOS"
+      gpgcheck: no
+
+  - package:
+      name: "httpd"
+      state: present
+
+  - copy:
+      src: "/root/x.html"
+      dest: "/var/www/html"
+   
+  - service:
+      name: "httpd"
+      state: started 
+
+  - firewalld:
+      port: "80/tcp"
+      immediate: yes
+      state: enabled     
+
