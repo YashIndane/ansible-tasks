@@ -1,0 +1,68 @@
+- hosts: all
+  vars:
+  -  mount_point: /my_mount
+  -  doc_root: /var/www/Y
+  -  port_no: 1296
+      
+  tasks:
+  - selinux:
+       state: disabled
+
+  - name: "creating mount point" 
+    file:
+       path: "{{ mount_point }}"
+       state: directory
+  
+  - name: "mounting dvd"
+    mount: 
+       path: "{{ mount_point }}"
+       src: "/dev/sr0"
+       fstype: iso9660
+       state: mounted
+  
+  - name: "creating yum repo"
+    yum_repository:
+       name: "nr1"
+       description: "test repo"
+       baseurl: "{{ mount_point }}/AppStream"
+       gpgcheck: no
+
+  - name: "creating yum repo"
+    yum_repository:
+       name: "nr2"
+       description: "test repo2"
+       baseurl: "{{ mount_point }}/BaseOS"
+       gpgcheck: no
+  
+  - name: "installing httpd"
+    package:
+       name: "httpd"
+       state: present
+  
+  - name: "copying httpd configuration files"
+    template:
+       src: "/root/new1.conf"
+       dest: "/etc/httpd/conf.d"
+  
+  - name: "creating document root"
+    file:
+       path: "{{ doc_root }}"
+       state: directory
+  
+  - name: "copying webpage"
+    copy:
+       src: "/root/x.html"
+       dest: "{{ doc_root }}"
+  
+  - name: "starting httpd service"
+    service:
+       name: "httpd"
+       state: started
+
+  - firewalld:
+       port: "{{ port_no }}/tcp"
+       immediate: yes
+       state: enabled
+
+
+ 
