@@ -6,7 +6,7 @@
 <configuration>
 <property>
 <name>fs.default.name</name>
-  <value>hdfs://{{ ansible_facts['default_ipv4']['address'] }}:{{ port_no }}</value>
+<value>hdfs://{{ ansible_facts['default_ipv4']['address'] }}:{{ port_no }}</value>
 </property>
 </configuration>
 
