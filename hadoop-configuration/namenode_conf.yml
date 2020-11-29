@@ -1,4 +1,4 @@
-- hosts: all
+- hosts: <ip>
   vars: 
   -   port_no: 304
   -   folder_name: /shared_folder
@@ -44,8 +44,9 @@
 
   - name: "starting namenode"
     shell: "hadoop-daemon.sh start namenode"
-  
 
-
+  - firewalld:
+       port: "{{ port_no }}/tcp"
+       state: enabled
   
 
