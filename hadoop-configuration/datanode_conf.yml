@@ -1,0 +1,45 @@
+- hosts: <ip>
+  vars: 
+  -   master_ip: <m_ip>
+  -   port_no: 304
+  -   folder_name: /datan_folder
+  tasks:
+  - name: "creating folder"
+    file:
+      path: "/root/softwares"
+      state: directory
+
+  - copy:
+      src: "/root/hadoop-1.2.1-1.x86_64.rpm"
+      dest: "/root/softwares"
+
+  - copy:
+      src: "/root/jdk-8u171-linux-x64.rpm"
+      dest: "/root/softwares"
+
+  - name: "installing java"
+    yum:
+      name: "/root/softwares/jdk-8u171-linux-x64.rpm"
+      state: present
+      disable_gpg_check: yes
+
+  - name: "installing hadoop"
+    shell: "rpm -i /root/softwares/hadoop-1.2.1-1.x86_64.rpm --force"
+
+
+  - name: "copying configuration files"
+    template:
+      src: "/core-site.xml"
+      dest: "/etc/hadoop"
+
+  - name: "copying configuration files"
+    template:
+      src: "/hdfs-site.xml"
+      dest: "/etc/hadoop"
+
+  - file:
+      path: "{{ folder_name }}"
+      state: directory
+ 
+  - name: "starting datanode"
+    shell: "hadoop-daemon.sh start datanode"
