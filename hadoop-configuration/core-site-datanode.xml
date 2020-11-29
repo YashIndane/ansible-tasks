@@ -6,7 +6,7 @@
 <configuration>
 <property>
 <name>fs.default.name</name>
-  <value>hdfs://{{ master_ip }}:{{ port_no }}</value>
+<value>hdfs://{{ master_ip }}:{{ port_no }}</value>
 </property>
 </configuration>
 
