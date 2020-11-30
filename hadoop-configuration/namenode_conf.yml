@@ -1,29 +1,28 @@
-- hosts: <ip>
-  vars: 
-  -   port_no: 304
-  -   folder_name: /shared_folder
+- hosts: "{{ host_ip }}"
+  vars_files:
+  - namenode_vars.yml
   tasks:
   - name: "creating folder"
     file:
-      path: "/root/softwares"
+      path: "{{ software_drt }}"
       state: directory
 
   - copy:
       src: "/root/hadoop-1.2.1-1.x86_64.rpm"
-      dest: "/root/softwares"
+      dest: "{{ software_drt }}"
   
   - copy:
       src: "/root/jdk-8u171-linux-x64.rpm"
-      dest: "/root/softwares"
+      dest: "{{ software_drt }}"
  
   - name: "installing java"
     yum:
-      name: "/root/softwares/jdk-8u171-linux-x64.rpm"
+      name: "{{ software_drt }}/jdk-8u171-linux-x64.rpm"
       state: present
       disable_gpg_check: yes
 
   - name: "installing hadoop"
-    shell: "rpm -i /root/softwares/hadoop-1.2.1-1.x86_64.rpm --force"
+    shell: "rpm -i {{ software_drt }}/hadoop-1.2.1-1.x86_64.rpm --force"
 
   - name: "copying configuration files"
     template:
@@ -40,7 +39,7 @@
       state: directory
 
   - name: "formatting namenode"
-    shell: "echo Y | hadoop namenode -format"
+    shell: "echo 'Y' | hadoop namenode -format"
 
   - name: "starting namenode"
     shell: "hadoop-daemon.sh start namenode"
@@ -48,5 +47,8 @@
   - firewalld:
        port: "{{ port_no }}/tcp"
        state: enabled
+  
+
+
   
 
