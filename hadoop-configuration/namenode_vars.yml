@@ -1,0 +1,4 @@
+host_ip: <ip>
+software_drt: "/root/softwares"
+folder_name: "/newfol"
+port_no: "760"
