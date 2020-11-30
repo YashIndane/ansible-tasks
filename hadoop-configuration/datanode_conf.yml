@@ -1,30 +1,28 @@
-- hosts: <ip>
-  vars: 
-  -   master_ip: <m_ip>
-  -   port_no: 304
-  -   folder_name: /datan_folder
+- hosts: "{{ host_ip }}"
+  vars_files: 
+  -   datanode_vars.yml
   tasks:
   - name: "creating folder"
     file:
-      path: "/root/softwares"
+      path: "{{ soft_drt }}"
       state: directory
 
   - copy:
       src: "/root/hadoop-1.2.1-1.x86_64.rpm"
-      dest: "/root/softwares"
+      dest: "{{ soft_drt }}"
 
   - copy:
       src: "/root/jdk-8u171-linux-x64.rpm"
-      dest: "/root/softwares"
+      dest: "{{ soft_drt }}"
 
   - name: "installing java"
     yum:
-      name: "/root/softwares/jdk-8u171-linux-x64.rpm"
+      name: "{{ soft_drt }}/jdk-8u171-linux-x64.rpm"
       state: present
       disable_gpg_check: yes
 
   - name: "installing hadoop"
-    shell: "rpm -i /root/softwares/hadoop-1.2.1-1.x86_64.rpm --force"
+    shell: "rpm -i {{ soft_drt }}/hadoop-1.2.1-1.x86_64.rpm --force"
 
 
   - name: "copying configuration files"
