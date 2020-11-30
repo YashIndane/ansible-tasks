@@ -1,0 +1,5 @@
+host_ip: <ip>
+master_ip: <ip>
+port_no: "760"
+folder_name: "/datafol"
+soft_drt: "/root/softwares"
