@@ -1,0 +1,118 @@
+- hosts: load_balancer	
+  vars:
+  -    mount_point: "/lb_mount"
+  -    bind_no: "2100"
+
+  tasks:
+  - selinux:
+       state: disabled
+
+  - name: "creating mount point"
+    file:
+       path: "{{ mount_point }}"
+       state: directory
+
+  - name: "mounting..."
+    mount:
+       src: "/dev/sr0"
+       path: "{{ mount_point }}"
+       fstype: "iso9660"
+       state: mounted
+ 
+  - name: "configuring yum"
+    yum_repository: 
+       description: "yum for load-balancer"
+       name: "lb"
+       baseurl: "{{ mount_point }}/AppStream"
+       gpgcheck: no
+
+  - name: "configuring yum"
+    yum_repository: 
+       description: "yum for load-balancer"
+       name: "lb1"
+       baseurl: "{{ mount_point }}/BaseOS"
+       gpgcheck: no
+
+  - name: "installing haproxy"
+    package:
+       name: "haproxy"
+       state: present
+
+  - template: 
+       src: "/root/haproxy.cfg"
+       dest: "/etc/haproxy/haproxy.cfg"
+
+  - name: "starting proxy server"
+    service:
+       name: "haproxy"
+       state: started
+ 
+  - firewalld:
+       port: "{{ bind_no }}/tcp"
+       state: enabled
+       immediate: yes
+
+
+- hosts: backend_servers
+  vars:
+  -    m_p: "/new_lb_mount"
+
+  tasks:
+  - name: "creating mount point"
+    file:
+       path: "{{ m_p }}"
+       state: directory
+  
+  - name: "mounting..."
+    mount:
+       path: "{{ m_p }}"
+       src: "/dev/sr0"
+       fstype: iso9660
+       state: mounted
+   
+  - name: "configuring yum"
+    yum_repository:
+       name: "nr1"
+       description: "test repo"
+       baseurl: "{{ m_p }}/AppStream"
+       gpgcheck: no
+  
+  - name: "configuring yum"
+    yum_repository:
+       name: "nr2"
+       description: "test repo2"
+       baseurl: "{{ m_p }}/BaseOS"
+       gpgcheck: no
+
+  - name: "installing httpd"
+    package:
+       name: "httpd"
+       state: present
+
+  - copy:
+       src: "/root/x.html"
+       dest: "/var/www/html"
+  
+  - name: "starting httpd"
+    service:
+       name: "httpd"
+       state: started
+
+  - firewalld:
+       port: "80/tcp"
+       immediate: yes
+       state: enabled
+
+  
+
+
+  
+  
+         
+
+
+
+  
+       
+  
+       
