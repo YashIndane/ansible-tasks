@@ -1,0 +1,15 @@
+- hosts: testing
+  tasks:
+  - copy:
+      dest: "/root"
+      src: "/root/e.txt"
+         
+    notify:
+    - restart httpd
+
+  handlers:
+  - name: restart httpd
+    service:
+       name: "httpd"
+       state: restarted
+
