@@ -1,0 +1,6 @@
+- hosts: load_balancer
+  tasks:
+  - package:
+       name: "haproxy"
+       state: present
+
