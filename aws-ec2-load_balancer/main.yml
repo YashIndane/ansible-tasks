@@ -2,8 +2,8 @@
   tasks:
   - name: "launching ec2-instance for load balancer"
     shell:
-       cmd: "ansible-playbook awsw.yml"
+       cmd: "ansible-playbook launch_LB.yml"
 
   - name: "installing haproxy on load balancer"
     shell:
-       cmd: "ansible-playbook clb.yml"
+       cmd: "ansible-playbook install_HAproxy.yml"
