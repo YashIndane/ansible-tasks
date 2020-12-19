@@ -1,0 +1,13 @@
+- hosts: load_balancer
+  tasks:
+  - package:
+       name: "haproxy"
+       state: present
+
+- hosts: localhost
+  tasks:
+  - lineinfile:
+       path: "/root/inven.txt"
+       line: "[backends]"
+       
+
