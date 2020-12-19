@@ -1,9 +1,0 @@
-- hosts: localhost
-  tasks:
-  - name: "launching ec2-instance for load balancer"
-    shell:
-       cmd: "ansible-playbook launch_LB.yml"
-
-  - name: "installing haproxy on load balancer"
-    shell:
-       cmd: "ansible-playbook install_HAproxy.yml"
