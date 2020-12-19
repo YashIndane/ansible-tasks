@@ -1,0 +1,13 @@
+- hosts: backends
+  tasks:
+  - package:
+       name: "httpd"
+       state: present
+
+  - copy:
+       src: "/root/lb-page.html"
+       dest: "/var/www/html"
+ 
+  - service:  
+       name: "httpd"
+       state: started
