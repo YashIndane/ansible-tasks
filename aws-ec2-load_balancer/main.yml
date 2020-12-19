@@ -1,0 +1,25 @@
+- hosts: localhost
+  vars:
+  -    ap: ansible-playbook
+
+  tasks:
+  - name: "provisioning ec2-instance for load balancer"
+    shell:
+       cmd: "{{ ap }} launch_LB.yml"
+
+  - name: "configuring load balancer"
+    shell:
+       cmd: "{{ ap }} install_HAproxy.yml"
+
+  - name: "provisioning ec2-instance for backend-servers"
+    shell:
+       cmd: "{{ ap }} launch_backends.yml"
+
+  - name: "configuring backend-servers"
+    shell:
+       cmd: "{{ ap }} configure_backend.yml"
+ 
+  - name: "starting haproxy service..."
+    shell:
+       cmd: "{{ ap }} start_LB.yml"
+
