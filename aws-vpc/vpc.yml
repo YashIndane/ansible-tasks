@@ -23,6 +23,6 @@
             Name: "{{ item.subnet_name }}"
 
     loop: 
-    -    { subnet_name: "mysubnet_1" , cidr: 53.160.101.0/24 }
-    -    { subnet_name: "mysubnet_2" , cidr: 53.160.200.0/24 }
+    -    { subnet_name: "mysubnet_1" , cidr:  }
+    -    { subnet_name: "mysubnet_2" , cidr:  }
 
