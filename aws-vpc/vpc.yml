@@ -6,7 +6,7 @@
   tasks: 
   - name: "creating vpc"
     ec2_vpc_net:
-        name: 
+        name: "{{ vpc_name }}"
         cidr_block: "{{ vpc_cidr }}"
         region: "ap-south-1"
         aws_access_key: "{{ aws_ak }}" 
@@ -23,6 +23,5 @@
             Name: "{{ item.subnet_name }}"
 
     loop: 
-    -    { subnet_name:  , cidr:  }
-    -    { subnet_name:  , cidr:  }
-
+    -    { subnet_name: "{{ subnet_name1 }}" , cidr: "{{ subnet_cidr1 }}" }
+    -    { subnet_name: "{{ subnet_name2 }}" , cidr: "{{ subnet_cidr2 }}" }
