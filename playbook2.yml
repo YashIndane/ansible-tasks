@@ -58,7 +58,6 @@
 
 - hosts: localhost
   tasks:  
-
   - lineinfile:
        line: "{{ hostvars['managed_node_ip']['docker_container']['NetworkSettings']['IPAddress'] }}"
        path: "/inven.txt" 
