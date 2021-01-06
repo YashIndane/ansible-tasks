@@ -1,50 +1,65 @@
-- hosts: all
+- hosts: otherhost
   tasks:
 
-  - yum_repository:
-       name: "docker_repo"
-       description: "This is testing purpose"
-       baseurl: "https://download.docker.com/linux/centos/7/x86_64/stable/"
+  - name: "configuring yum..."
+    yum_repository:
+       name: "{{ item.name }}"
+       description: "{{ item.des }}"
+       baseurl: "{{ item.url }}"
        gpgcheck: no
-       
-  - package:
-      name: "docker-ce-18.06.3.ce-3.el7.x86_64"
-      state: present
+
+    loop:
+    -  { name: "docker_repo" , des: "this is for testing purpose" , url: "https://download.docker.com/linux/centos/7/x86_64/stable/" }
+    -  { name: "re1" , des: "test repo" , url: "/run/media/root/RHEL-8-0-0-BaseOS-x86_64/AppStream" }
+    -  { name: "re2" , des: "test repo 1" , url: "/run/media/root/RHEL-8-0-0-BaseOS-x86_64/BaseOS"}
+    
+  - name: "installing docker-ce"   
+    package:
+       name: "docker-ce-18.06.3.ce-3.el7.x86_64"
+       state: present
 
   - pip:
-      name: "docker"
-
-  - service:
-      name: "docker"
-      state: started
+       name: "docker"
+  
+  - name: "starting docker"
+    service:
+       name: "docker"
+       state: started
   
   - file:
-      path: "/web_"
-      state: directory
+       path: "/web_"
+       state: directory
 
   - copy:
-      src: "/x.html"
-      dest: "/web_"
-  
-  - docker_image:
-      name: "httpd"
-      source: pull
+       src: "/x.html"
+       dest: "/web_"
 
+  - name: "pulling httpd docker image"
+    docker_image:
+       name: "httpd"
+       source: pull
+
+  - firewalld:
+       immediate: yes
+       service: "http" 
+       state: enabled
+       permanent: yes
+  
   - docker_container:
-      name: "dock_web"
-      image: httpd
-      state: started
-      exposed_ports:
-      - "80"
-      ports:
-      - "3420:80"
-      volumes:
-      - /web_:/usr/local/apache2/htdocs/
-   
- 
+       name: "dock_web6"
+       image: httpd
+       state: started
+       exposed_ports:
+       - "80"
+       ports:
+       - "554:80"
+       volumes: 
+       - /web_ :/usr/local/apache2/htdocs/"
 
+    register: di
 
-  
+  - debug:
+        var: di
 
 
 
