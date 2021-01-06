@@ -59,7 +59,7 @@
     register: di
 
   - debug:
-        var: di
+        var: di['ansible_facts']['docker_container']['NeworkSettings']['IPAddress']
 
 
 
