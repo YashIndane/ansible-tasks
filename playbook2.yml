@@ -1,4 +1,4 @@
-- hosts: otherhost
+- hosts: [otherhost]
   tasks:
 
   - name: "configuring yum..."
@@ -46,20 +46,22 @@
        permanent: yes
   
   - docker_container:
-       name: "dock_web6"
+       name: "dock_web11"
        image: httpd
        state: started
        exposed_ports:
        - "80"
        ports:
-       - "554:80"
+       - "428:80"
        volumes: 
-       - /web_ :/usr/local/apache2/htdocs/"
+       - /web_:/usr/local/apache2/htdocs/
 
-    register: di
+- hosts: localhost
+  tasks:  
 
-  - debug:
-        var: di['ansible_facts']['docker_container']['NeworkSettings']['IPAddress']
-
+  - lineinfile:
+       line: "{{ hostvars['managed_node_ip']['docker_container']['NetworkSettings']['IPAddress'] }}"
+       path: "/inven.txt" 
+       
 
 
