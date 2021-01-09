@@ -1,0 +1,16 @@
+- hosts: all
+  tasks:
+  - package:
+      name: 'httpd'
+      state: present
+
+- hosts: all
+  vars_files:
+  -  "{{ hostvars['ip_of_managed_node']['ansible_os_family'] }}.yml"
+  tasks:
+  - name: 'installing httpd'
+    package:
+        name: "{{ package_name }}"
+        state: present 
+
+
