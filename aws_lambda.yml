@@ -1,0 +1,22 @@
+---
+
+- hosts: localhost
+  vars_files:
+  -     sample_vars.yml
+  tasks:
+  - name: "creating lambda"
+    community.aws.lambda:
+        name: "testingfunction"
+        state: present
+        zip_file: "sample.zip"
+        runtime: "python3.8"
+        handler: "sample.myfun"
+        region: "ap-south-1"
+        role: "{{ arn }}"
+        aws_access_key: "{{ aws_ak }}"
+        aws_secret_key: "{{ aws_sk }}"
+
+        
+        
+        
+         
