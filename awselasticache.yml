@@ -1,0 +1,24 @@
+---
+
+- hosts: localhost
+  vars_files:
+  -     sample_vars.yml
+  tasks:
+  - name: "creating a memcached & redis cache servers..."
+    elasticache:
+        name: "{{ item.e_name }}"
+        state: present
+        engine: "{{ item.engine_type }}"
+        node_type: cache.t2.micro
+        num_nodes: 1
+        region: ap-south-1
+        zone: ap-south-1b
+        aws_secret_key: "{{ aws_sk }}"
+        aws_access_key: "{{ aws_ak }}"
+
+    loop:
+    - { engine_type: "memcached" , e_name: "mymemcached2" }
+    - { engine_type: "redis" , e_name: "myredis2" }
+    
+
+          
