@@ -1,0 +1,13 @@
+# network_files.yml
+---
+- name: Copy using inline content to first file
+  copy:
+    content: |
+      ip_address={{ item }}
+    dest: /etc/some_config_file.conf
+ 
+- name: Copy using inline content to second file
+  copy:
+    content: |
+      ip_address={{ item }}
+    dest: /etc/some_other_config_file.conf

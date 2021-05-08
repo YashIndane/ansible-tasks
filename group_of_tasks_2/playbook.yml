@@ -1,0 +1,12 @@
+# playbook.yml
+---
+- hosts: localhost
+  connection: local
+  vars:
+    ip_addresses:
+      - 10.0.0.10
+      - 10.0.0.11
+  tasks:
+    - name: deploy files with network address in them
+      include_tasks: network_files.yml
+      loop: "{{ ip_addresses }}"
