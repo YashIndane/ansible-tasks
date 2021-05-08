@@ -1,0 +1,25 @@
+---
+- name: "launching ec2-instances"
+  ec2_instance:
+        region: "{{ reg }}"
+        image_id: "{{ img_id }}"
+        instance_type: "{{ i_type }}"
+        vpc_subnet_id: "{{ vpcsi }}"
+        key_name: "{{ key }}"
+        security_group: "{{ sg_group }}"
+        name: "{{ item.ins_name }}"
+        state: present
+        aws_access_key: "{{ aws_ak }}"
+        aws_secret_key: "{{ aws_sk }}"
+        volumes:
+        - device_name: "/dev/xvda"
+          ebs:
+            volume_size: "{{ vol_size }}"
+            delete_on_termination: true
+
+  register: details
+      
+- name: "saving the ip"
+  lineinfile:
+        path: "/inven.txt"
+        line: "{{ details.instances[0].public_ip_address }}"

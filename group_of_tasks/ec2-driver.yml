@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  vars_files:
+  - /details.yml
+  tasks:
+  - name: "launch the ec2-instance and save the ip"
+    include_tasks: ec2.yml
+    loop:
+    - { ins_name: "namenode" }
+    - { ins_name: "jobtracker" }
+    - { ins_name: "client" }
